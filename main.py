@@ -30,7 +30,7 @@ class LogisticRegressionModel(tf.keras.Model):
         return self.dense5(x)
 
 
-def dataVisualization(target):
+def data_visualization(target):
     # data visualization
     unique, count = np.unique(target, return_counts=True)
     plt.xticks(unique, unique)
@@ -41,7 +41,7 @@ def dataVisualization(target):
     plt.show()
 
 
-def dataPreprocessing(data, target):
+def data_preprocessing(data, target):
     Stopwords = stopwords.words('english')
     stemmer = PorterStemmer()
     email = data[:, 1]
@@ -58,13 +58,13 @@ def dataPreprocessing(data, target):
     return train_test_split(X, y, test_size=0.20, random_state=12)
 
 
-def spamMessageClassification(data):
+def spam_message_classification(data):
     le = LabelEncoder()
     target = le.fit_transform(data[:, 0])
     print('sentence quantity: {} ,train sample: {} ,test sample: {}'.format(len(target), len(target) * 0.8,
                                                                             len(target) * 0.2))
-    dataVisualization(target)
-    X_train, X_test, y_train, y_test = dataPreprocessing(data, target)
+    data_visualization(target)
+    X_train, X_test, y_train, y_test = data_preprocessing(data, target)
 
     model = LogisticRegressionModel(2, X_train.shape[1])
     model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
@@ -83,4 +83,4 @@ def spamMessageClassification(data):
 
 
 if __name__ == '__main__':
-    spamMessageClassification(pd.read_csv('./data/spam.csv', encoding='latin-1').iloc[:, :2].values)
+    spam_message_classification(pd.read_csv('./data/spam.csv', encoding='latin-1').iloc[:, :2].values)
